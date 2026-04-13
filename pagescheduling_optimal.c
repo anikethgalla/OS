@@ -25,7 +25,7 @@ int main(){
             // Find optimal replacement
             for(int j=0;j<3;j++){
                 int k;
-                for(k = i+1; k<n; k++){
+                for(int k = i+1; k<n; k++){
                     if(frames[j] == pages[k])
                         break;
                 }
