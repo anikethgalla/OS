@@ -4,31 +4,65 @@ int main(){
     int pages[] = {7,0,1,2,0,3,0,4};
     int frames[3] = {-1,-1,-1};
     int n = 8, faults = 0;
-    int hit;
-    int pos;
+
     for(int i=0;i<n;i++){
-        hit=0;
+        int hit = 0;
+
+        printf("Page %d -> ", pages[i]);
+
+        // Check hit
         for(int j=0;j<3;j++){
-            if(frames[j]==pages[i]){
-                hit=1;
+            if(frames[j] == pages[i]){
+                hit = 1;
+                break;
             }
         }
 
         if(!hit){
-            pos=0;
-            int far=i;
+            int pos = -1;
+            int farthest = i;
+
+            // Find optimal replacement
             for(int j=0;j<3;j++){
                 int k;
-                for(int k=i+1;k<n;k++){
-                    if(frames[j]==pages[k]) break;
+                for(k = i+1; k<n; k++){
+                    if(frames[j] == pages[k])
+                        break;
+                }
 
-                    if(k==n){pos=j;break;}
-                    if(k>far){pos=j;far=k;}
+                // If page not found in future
+                if(k == n){
+                    pos = j;
+                    break;
+                }
+
+                // Find farthest use
+                if(k > farthest){
+                    farthest = k;
+                    pos = j;
                 }
             }
-        frames[pos]=pages[i];
-        faults++;
+
+            frames[pos] = pages[i];
+            faults++;
+            printf("Fault ");
         }
+        else{
+            printf("Hit   ");
+        }
+
+        // Print frames
+        for(int j=0;j<3;j++){
+            if(frames[j] == -1)
+                printf("- ");
+            else
+                printf("%d ", frames[j]);
+        }
+
+        printf("\n");
     }
-    printf("Faults: %d\n",faults);
+
+    printf("\nTotal Page Faults: %d\n", faults);
+
+    return 0;
 }
